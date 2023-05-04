@@ -117,9 +117,8 @@ class TabNetMultiHead(tf.keras.Model):
       columns: The Tensorflow column names for the dataset.
       num_features: The number of input features (i.e the number of columns for
         tabular data assuming each feature is represented with 1 dimension).
-      feature_dim: Dimensionality of hidden representation for the peptide embedding 
-        for multi-headed attention. During feature transformation, each layer first
-        maps the representation to a 2*feature_dim-dimensional output and half 
+      feature_dim: Dimensionality of hidden representation. During feature transformation, 
+        each layer first maps the representation to a 2*feature_dim-dimensional output and half 
         of it is used to determine the nonlinearity of the GLU activation where the
         other half is used as an input to GLU, and eventually feature_dim-dimensional 
         output is transferred to the next layer. 
@@ -233,7 +232,7 @@ class TabNetMultiHead(tf.keras.Model):
         projection_layer_peptide = tf.keras.layers.Dense(peptide_embeddings.shape[-1])
         weighted_peptide = projection_layer_peptide(masked_features)
         
-       # Apply stacked MultiHeadAttention on the weighted_peptide and weighted_table
+       # Apply MultiHeadAttention on the weighted_peptide and weighted_table
         attention_output_integrated = tf.expand_dims(weighted_table, axis=1)
         attention_output_integrated, _ = self.multi_attention_layer(weighted_peptide, peptide_embeddings, attention_output_integrated)
 
